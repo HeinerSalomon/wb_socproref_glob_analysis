@@ -49,14 +49,27 @@ library(gmodels)
 ##
 ## ---------------------------
 
-## --- Bangladesh
+## ------ Bangladesh
+
+## Loading the data
 
 data <- file.path(path,"/bgd/2018 PDM/UNHCR_BGD_PDM_2018_JULY_household_v2.1.dta") %>%
   read.dta13() %>%
   select(household_id,weight,C1_food,C1_c4w,C1_nfi,C1_other,C2)
 
+## Adding data set level values
+
+data$year <- 2018
+data$type <- "Post-distribution Monitoring"
+data$country <- "Bangladesh"
+
+## Data transformation before assigning variables
+
 data <- data %>%
   mutate(received_any = pmax(C1_food,C1_c4w,C1_nfi,C1_other))
+
+
+## Assigning the crucial variables
 
 data$pid <- NA
 data$hhid <- data$household_id
@@ -75,10 +88,25 @@ data$received_socpro_past_1y <- NA
 data$value_socpro_LCU_all <- data$C2
 data$value_socpro_LCU_cash <- data$C2
 
+## Assigning the specific data set name
 
 bgd_pdm_2018 <- data
 
 
+## ---------------------------
+## 
+## SECTION 2: Creating the data set of outputs
+##
+## ---------------------------
+
+
 for (dataset in c(bgd_pdm_2018,)){
   view(dataset)
-  }
+}
+
+
+## ---------------------------
+## 
+## SECTION 3: Producing visual output of shared data set
+##
+## ---------------------------
